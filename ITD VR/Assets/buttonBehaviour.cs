@@ -4,26 +4,33 @@ using UnityEngine.SceneManagement;
 
 public class buttonBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    public int sceneIndex;
-
     public TMPro.TextMeshProUGUI errormsg;
     public TMPro.TMP_InputField passwordInput;
-    public void LoadScene()
-    {
-        SceneManager.LoadScene(sceneIndex);
-    }
+    public TMPro.TextMeshProUGUI successmsg;
+
+    public GameObject loginCanvas;
+    public GameObject game;
 
     public void CheckPassword()
     {
         if (passwordInput.text == "123456")
         {
-            SceneManager.LoadScene(sceneIndex);
+            Debug.Log("Login Successful!");
+            StartCoroutine(ShowSuccessMessage());
         }
         else
         {
+            Debug.Log("Incorrect Password. Try Again.");
             StartCoroutine(ShowErrorMessage());
         }
+    }
+    IEnumerator ShowSuccessMessage()
+    {
+        successmsg.text = "Login Successful!";
+        loginCanvas.SetActive(false);
+        game.SetActive(true);
+        yield return new WaitForSeconds(2);
+        successmsg.text = "";
     }
 
     IEnumerator ShowErrorMessage()
